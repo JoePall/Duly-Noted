@@ -1,3 +1,4 @@
+console.log("Local js loaded...");
 const $noteTitle = $(".note-title");
 const $noteText = $(".note-textarea");
 const $saveNoteBtn = $(".save-note");
@@ -15,7 +16,6 @@ const getNotes = () => {
   });
 };
 
-// A function for saving a note to the db
 const saveNote = (note) => {
   return $.ajax({
     url: "/api/notes",
@@ -51,7 +51,10 @@ const renderActiveNote = () => {
 
 // Get the note data from the inputs, save it to the db and update the view
 const handleNoteSave = function () {
+  let id = "";
+  for (let i = 0; i < 50; i++) id += Math.floor(Math.random() * 10);
   const newNote = {
+    id: id,
     title: $noteTitle.val(),
     text: $noteText.val(),
   };

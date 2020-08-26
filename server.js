@@ -8,24 +8,20 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(getFileData("index"));
 });
 
-app.get("/notes", function (req, res) {
+app.get("/notes", (req, res) => {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(getFileData("notes"));    
 });
 
 function getFileData(viewTitle) {
-    let path = __dirname + "/public/" + viewTitle + ".html";
-    console.log(path);
-    var result = fs.readFileSync(path, "utf8");
-    console.log(result);
-    return result;
+    return fs.readFileSync(__dirname + "/public/" + viewTitle + ".html", "utf8");
 }
 
-app.listen(PORT, function () {
+app.listen(PORT, () => {
     if (!process.env.PORT) require('child_process').exec(`start http://localhost:${PORT}/`);
 });

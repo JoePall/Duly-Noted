@@ -12,35 +12,49 @@ app.use(express.static('public'))
 
 console.log("Server Loaded...");
 
-// API
-app.get("/api/notes", (req, res) => res.json(getData()));
+// Returns all notes
+app.get("/api/notes", (req, res) => res.json(getFileJSONData()));
 
+// Adds a note
 app.post("/api/notes", (req, res) => {
-    let result = getData();
+    let fileData = getFileJSONData();
 
-    if (result === undefined) result = [];
-    result.push(req.body);
+    if (fileData === undefined) fileData = [req.body];
+    else fileData.push(req.body);
 
-    setData(result);
+    setFileJSONData(fileData);
 
     res.json(req.body);
 });
 
+// Returns the note with the matching id
+app.get("/api/notes/:id", (req, res) => {
+    const fileData = getFileJSONData();
+    const result = fileData.find(x => x.id === req.params.id)
+
+    res.json(result);
+});
+
+// Modifies the note with the matching id
+app.post("/api/notes/:id", (req, res) => {
+    const fileData = getFileJSONData();
+    const result = fileData.map(item => item.id == req.params.id ? req.body : item);
+
+    setFileJSONData(result);
+
+    res.json(req.body);
+});
+
+// Deletes the note with the matching id
 app.delete("/api/notes/:id", (req, res) => {
-    let { id } = req.params;
-    
-    let data = getData();
+    const { id } = req.params;
+    const fileData = getFileJSONData();
 
-    if (data === "") {
-        return res.end("Could not find note with id of " + id + ".");
-    }
+    if (fileData === "") return res.end("no data");
 
-    let result = [];
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].id != id) result.push(data[i]);
-    }
+    const result = fileData.map(x => x.id != id);
 
-    setData(result);
+    setFileJSONData(result);
 
     res.end("Removed note with id of " + id + ".");
 });
@@ -55,13 +69,25 @@ const sendView = (res, viewTitle) => {
     res.end(fs.readFileSync(__dirname + "/public/" + viewTitle + ".html", "utf8"));
 };
 
-const getData = () => {
+
+
+const generateID = (length = 50) => {
+    let result = "";
+
+    for (let i = 0; i < length; i++) result += Math.floor(Math.random() * 10);
+
+    return result;
+}
+
+// Returns the db file contents as JSON data
+const getFileJSONData = () => {
     var contents = fs.readFileSync(dataPath, "utf8");
     if (contents === "") return;
     return JSON.parse(contents);
 };
 
-const setData = (contents) => {
+// Sets the db file contents as JSON stringified
+const setFileJSONData = (contents) => {
     fs.writeFileSync(dataPath, JSON.stringify(contents), "utf8");
 }
 

@@ -52,8 +52,11 @@ app.delete("/api/notes/:id", (req, res) => {
 
     if (fileData === "") return res.end("no data");
 
-    const result = fileData.map(x => x.id != id);
-
+    let result = [];
+    fileData.forEach(item => {
+        if (item.id != id) result.push(item);
+    });
+    
     setFileJSONData(result);
 
     res.end("Removed note with id of " + id + ".");
@@ -68,16 +71,6 @@ const sendView = (res, viewTitle) => {
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(fs.readFileSync(__dirname + "/public/" + viewTitle + ".html", "utf8"));
 };
-
-
-
-const generateID = (length = 50) => {
-    let result = "";
-
-    for (let i = 0; i < length; i++) result += Math.floor(Math.random() * 10);
-
-    return result;
-}
 
 // Returns the db file contents as JSON data
 const getFileJSONData = () => {

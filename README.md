@@ -2,9 +2,13 @@
 
 # Duly-Noted
 
+## Description
+
 This is a web based note taking application. It demonstrates express JSON storage.
 
-Check out the website at <a href="https://whispering-escarpment-77636.herokuapp.com/">https://whispering-escarpment-77636.herokuapp.com/</a>!
+Check out the website at <a href="https://duly-noted-x.herokuapp.com/">https://duly-noted-x.herokuapp.com/</a>!
+
+[Visit my Portfolio website here](https://josiah-powell-portfolio.herokuapp.com/) 
 
 ## Questions
 
@@ -13,8 +17,3 @@ Check out the website at <a href="https://whispering-escarpment-77636.herokuapp.
 ## License
 
 <p>MIT License</p>
-
----
-
-**AUTHOR:** JOSIAH **POWELL**<br>
-**DATE:** 8/20/20
